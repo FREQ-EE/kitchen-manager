@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "title": {
+      "type": "string"
+    },
+    "recipes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9-]*$"
+          },
+          "path": {
+            "type": "string",
+            "pattern": "^recipes/records/[a-z0-9-]+\\.json$"
+          }
+        },
+        "required": [
+          "id",
+          "path"
+        ],
+        "additionalProperties": true
+      }
+    },
+    "categories": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "label"
+        ],
+        "additionalProperties": true
+      }
+    },
+    "featured_recipe": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "title",
+    "recipes",
+    "categories"
+  ],
+  "additionalProperties": true
+}

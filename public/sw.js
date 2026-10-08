@@ -1,0 +1,10 @@
+/* Opt-in private offline edition. Never cache redirects, APIs, auth or error pages. */
+const CACHE='kitchen-manager-offline-v1';
+const marker=new Request(new URL('/__offline_enabled',self.location.origin));
+async function enabled(){return !!(await (await caches.open(CACHE)).match(marker));}
+function safe(response,url){return response.ok&&!response.redirected&&response.type!=='opaque'&&new URL(response.url||url).origin===self.location.origin;}
+self.addEventListener('install',event=>event.waitUntil(self.skipWaiting()));
+self.addEventListener('activate',event=>event.waitUntil(self.clients.claim()));
+self.addEventListener('message',event=>{event.waitUntil((async()=>{try{if(event.data.type==='CLEAR_OFFLINE'){await caches.delete(CACHE);event.ports[0]?.postMessage({ok:true});return;}if(event.data.type!=='SAVE_OFFLINE')return;const cache=await caches.open(CACHE);const urls=[...new Set(['/', '/favicon.svg','/manifest.webmanifest',...(event.data.assets??[])])].map(u=>new URL(u,self.location.origin)).filter(u=>u.origin===self.location.origin&&!u.pathname.startsWith('/api/')&&!/sign(in|out)|callback/.test(u.pathname)&&!u.search);for(const url of urls){const r=await fetch(url);if(!safe(r,url.href))throw Error('Unavailable');await cache.put(url.href,r);}await cache.put(marker,new Response('enabled'));event.ports[0]?.postMessage({ok:true});}catch{event.ports[0]?.postMessage({ok:false});}})());});
+self.addEventListener('fetch',event=>{const url=new URL(event.request.url);if(event.request.method!=='GET'||url.origin!==self.location.origin||(url.pathname.startsWith('/api/')||url.pathname.startsWith('/preview'))||/sign(in|out)|callback/.test(url.pathname)||url.search)return;event.respondWith((async()=>{const useCache=await enabled();try{const r=await fetch(event.request);if(useCache&&safe(r,url.href)){const cache=await caches.open(CACHE);await cache.put(event.request,r.clone());}return r;}catch(e){if(!useCache)throw e;const cache=await caches.open(CACHE);const cached=await cache.match(event.request);if(cached)return cached;if(event.request.mode==='navigate'){const shell=await cache.match('/');if(shell)return shell;}throw e;}})());});
+

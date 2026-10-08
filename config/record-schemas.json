@@ -1,0 +1,8 @@
+{
+  "manifest-index.json": "manifest-index",
+  "inventory/pantry/ingredients.json": "pantry",
+  "recipes/index.json": "recipe-index",
+  "recipes/annotations.json": "annotations",
+  "config/storage.json": "storage",
+  "config/shopping.json": "shopping"
+}

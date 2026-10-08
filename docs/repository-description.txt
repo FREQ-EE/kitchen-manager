@@ -1,0 +1,1 @@
+A private kitchen manager for recipes, pantry inventory and shopping, with local running and optional GitHub and ChatGPT workflows.

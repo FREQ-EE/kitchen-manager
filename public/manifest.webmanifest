@@ -1,0 +1,19 @@
+{
+  "id": "/",
+  "name": "Kitchen Manager",
+  "short_name": "Kitchen",
+  "description": "Recipes, pantry and shopping",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#151715",
+  "theme_color": "#151715",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

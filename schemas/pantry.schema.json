@@ -1,0 +1,178 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "title",
+    "description",
+    "items"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "schema_version": {
+      "const": 1
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "provenance": {
+      "type": "object"
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "stock_status",
+          "restock_status"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "aliases": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "stock_status": {
+            "enum": [
+              "in_stock",
+              "low",
+              "out_of_stock",
+              "unknown"
+            ]
+          },
+          "restock_status": {
+            "enum": [
+              "not_needed",
+              "wanted",
+              "ordered",
+              "unspecified"
+            ]
+          },
+          "quantity": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "unit": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "notes": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "abv_percent": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0,
+            "maximum": 100
+          },
+          "category": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "scientific_name": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "style": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "variant": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "portfolio": {
+            "type": "string"
+          },
+          "style_family": {
+            "type": "string"
+          },
+          "replenishment_policy": {
+            "enum": [
+              "manual",
+              "always"
+            ]
+          },
+          "shopping_zone": {
+            "enum": [
+              "produce",
+              "eggs",
+              "frozen",
+              "bread",
+              "deli",
+              "coffee_tea",
+              "baking",
+              "pantry",
+              "toiletries",
+              "confectionery",
+              "kitchen_supplies",
+              "fresh_meat",
+              "sliced_meat",
+              "dairy_cheese",
+              "cereals",
+              "international",
+              "spices",
+              "snacks",
+              "beverages",
+              "other"
+            ]
+          },
+          "storage_location": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "storage_location_alternate": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": false,
+  "title": "Pantry inventory"
+}
